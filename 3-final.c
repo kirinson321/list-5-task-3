@@ -7,7 +7,7 @@ void figures(int column_number, int row_number, int tab[][row_number], char c, i
 
     if(c=='K')
     {
-        while(tab[spawn][i+1]==0 && i+1 < row_number)
+        while(tab[spawn][i+1]==0 && tab[spawn+1][i+1] == 0 && i+1 < row_number)
         {
             i++;
         }
@@ -19,7 +19,7 @@ void figures(int column_number, int row_number, int tab[][row_number], char c, i
 
     } else if(c=='T')
     {
-        while(tab[spawn+1][i+1]==0 && i+1 < row_number)
+        while(tab[spawn+1][i+1]==0 && tab[spawn][i] == 0 && tab[spawn+2][i] == 0 && i+1 < row_number)
         {
             i++;
         }
@@ -43,7 +43,8 @@ void figures(int column_number, int row_number, int tab[][row_number], char c, i
 
     } else if(c=='F')
     {
-        while(tab[spawn][i+1] == 0 && i+1<row_number)
+        i++;
+        while(tab[spawn][i+1] == 0 && tab[spawn+1][i-1] == 0 && i+1<row_number)
         {
             i++;
         }
@@ -77,6 +78,58 @@ void figures(int column_number, int row_number, int tab[][row_number], char c, i
     i = 0;
 }
 
+
+void lower(int column, int row, int tab[][row], int position)
+{
+    //to lower the whole board above position
+
+    int limit = 0;
+    limit = position; //position is the number of the full row
+
+    //zero'ing the position row
+    for(int i=0; i<column; i++)
+    {
+        tab[i][position] = 0;
+    }
+
+    while(limit > 0)
+    {
+        for(int i=0; i<column; i++)
+        {
+            tab[i][limit] = tab[i][limit - 1];
+        }
+        limit--;
+    }
+
+    for(int i=0; i<column; i++)
+    {
+        tab[i][0] = 0;
+    }
+}
+
+
+void clear_full_lines(int column, int row, int tab[][row])
+{
+    int flag;
+    flag = 1;
+
+    for(int i=0; i<row; i++)
+    {
+        flag = 1;
+        for(int j=0; j<column; j++)
+        {
+            if(tab[j][i] == 0)
+            {
+                flag = 0;
+            }
+        }
+        if(flag == 1)
+        {
+            lower(column, row, tab, i);
+        }
+    }
+
+}
 
 
 int main()
@@ -115,6 +168,17 @@ int main()
         figures(column, row, tab, c, x);
     }
 
+    for(int i=0; i<row; i++)
+    {
+        for(int j=0; j<column; j++)
+        {
+            printf("%d ", tab[j][i]);
+        }
+        printf("\n");
+    }
+/*
+    tab[3][4] = 1;
+    lower(column, row, tab, 5);
 
     for(int i=0; i<row; i++)
     {
@@ -124,6 +188,7 @@ int main()
         }
         printf("\n");
     }
+*/
 
     return 0;
 }
