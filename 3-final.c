@@ -86,7 +86,9 @@ int main()
     int x;
     char c;
 
-    scanf("%d %d", &column, &row);
+    int k=0;
+
+    scanf("%d %d %d", &column, &row, &k);
     int tab[column][row];
     for(int i=0; i<row; i++)
     {
@@ -105,11 +107,14 @@ int main()
         printf("\n");
     }
 
-    c = getchar();
-    scanf("%c %d", &c, &x);
     //scanf("%d", &x);
+    for(int i=0; i<k; i++)
+    {
+        c = getchar();
+        scanf("%c %d", &c, &x);
+        figures(column, row, tab, c, x);
+    }
 
-    figures(column, row, tab, c, x);
 
     for(int i=0; i<row; i++)
     {
