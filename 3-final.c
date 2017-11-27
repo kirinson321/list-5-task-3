@@ -143,6 +143,7 @@ int main()
 
     scanf("%d %d %d", &column, &row, &k);
     int tab[column][row];
+//here I put zeroes at all the array's cells
     for(int i=0; i<row; i++)
     {
         for(int j=0; j<column; j++)
@@ -150,7 +151,7 @@ int main()
             tab[j][i] = 0;
         }
     }
-
+//printing out the board
     for(int i=0; i<row; i++)
     {
         for(int j=0; j<column; j++)
@@ -160,14 +161,17 @@ int main()
         printf("\n");
     }
 
+//this will work k times, reading figures; the core of this program
     //scanf("%d", &x);
     for(int i=0; i<k; i++)
     {
         c = getchar();
         scanf("%c %d", &c, &x);
         figures(column, row, tab, c, x);
+        clear_full_lines(column, row, tab);
     }
 
+//printing out the board
     for(int i=0; i<row; i++)
     {
         for(int j=0; j<column; j++)
