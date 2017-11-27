@@ -56,7 +56,6 @@ void figures(int column_number, int row_number, int tab[][row_number], char c, i
 
     } else if(c=='W')
     {
-        //while(tab[spawn][i+1] == 0 && tab[spawn+1][i+1] == 0 && tab[spawn+2][i+1] == 0 i+1<row_number)
         while(tab[spawn][i+1] == 0 && tab[spawn+1][i+1] == 0 && tab[spawn+2][i+1] == 0 && tab[spawn+3][i+1] == 0 && tab[spawn+4][i+1] == 0 && i+1 < row_number)
         {
             i++;
@@ -73,6 +72,103 @@ void figures(int column_number, int row_number, int tab[][row_number], char c, i
         tab[spawn+2][i-2] = 1;
         tab[spawn+4][i-1] = 1;
         tab[spawn+4][i-2] = 1;
+    } else if(c=='*')
+    {
+        while(tab[spawn][i+1] == 0 && i+1 < row_number)
+        {
+            i++;
+        }
+
+        // we need to set 3 cases: left, middle and right
+        //in each of these cases we have to check for 3 things:
+        //whether the bomb detonates at the top, at the bottom or in the middle of the board
+
+        if(spawn == 0)
+        {
+            if(i==0)
+            {
+                tab[0][0] = 0;
+                tab[spawn][i+1] = 0;
+                tab[spawn+1][i] = 0;
+                tab[spawn+1][i+1] = 0;
+
+            } else if(i == row_number-1)
+            {
+                tab[spawn][i] = 0;
+                tab[spawn][i-1] = 0;
+                tab[spawn+1][i-1] = 0;
+                tab[spawn+1][i] = 0;
+
+            } else
+            {
+                tab[spawn][i] = 0;
+                tab[spawn][i-1] = 0;
+                tab[spawn][i+1] = 0;
+                tab[spawn+1][i] = 0;
+                tab[spawn+1][i+1] = 0;
+                tab[spawn+1][i-1] = 0;
+
+            }
+
+        } else if(spawn == column_number-1)
+        {
+            if(i==0)
+            {
+                tab[spawn][i] = 0;
+                tab[spawn-1][i] = 0;
+                tab[spawn-1][i+1] = 0;
+                tab[spawn][i+1] = 0;
+
+            } else if(i == row_number-1)
+            {
+                tab[spawn][i] = 0;
+                tab[spawn][i-1] = 0;
+                tab[spawn-1][i-1] = 0;
+                tab[spawn-1][i] = 0;
+
+            } else
+            {
+                tab[spawn][i] = 0;
+                tab[spawn][i-1] = 0;
+                tab[spawn][i+1] = 0;
+                tab[spawn-1][i-1] = 0;
+                tab[spawn-1][i] = 0;
+                tab[spawn-1][i+1] = 0;
+            }
+
+        } else
+        {
+            if(i==0)
+            {
+                tab[spawn][i] = 0;
+                tab[spawn-1][i] = 0;
+                tab[spawn+1][i] = 0;
+                tab[spawn-1][i+1] = 0;
+                tab[spawn][i+1] = 0;
+                tab[spawn+1][i+1] = 0;
+
+            } else if(i == row_number-1)
+            {
+                tab[spawn][i] = 0;
+                tab[spawn-1][i] = 0;
+                tab[spawn+1][i] = 0;
+                tab[spawn][i-1] = 0;
+                tab[spawn-1][i-1] = 0;
+                tab[spawn+1][i-1] = 0;
+
+            } else
+            {
+                tab[spawn-1][i-1] = 0;
+                tab[spawn][i-1] = 0;
+                tab[spawn+1][i-1] = 0;
+                tab[spawn-1][i] = 0;
+                tab[spawn][i] = 0;
+                tab[spawn+1][i] = 0;
+                tab[spawn-1][i+1] = 0;
+                tab[spawn][i+1] = 0;
+                tab[spawn+1][i+1] = 0;
+            }
+        }
     }
 
     i = 0;
@@ -143,7 +239,7 @@ int main()
 
     scanf("%d %d %d", &column, &row, &k);
     int tab[column][row];
-//here I put zeroes at all the array's cells
+//here we put zeroes at all the array's cells
     for(int i=0; i<row; i++)
     {
         for(int j=0; j<column; j++)
@@ -151,18 +247,9 @@ int main()
             tab[j][i] = 0;
         }
     }
-//printing out the board
-    for(int i=0; i<row; i++)
-    {
-        for(int j=0; j<column; j++)
-        {
-            printf("%d ", tab[j][i]);
-        }
-        printf("\n");
-    }
 
 //this will work k times, reading figures; the core of this program
-    //scanf("%d", &x);
+
     for(int i=0; i<k; i++)
     {
         c = getchar();
@@ -171,28 +258,35 @@ int main()
         clear_full_lines(column, row, tab);
     }
 
-//printing out the board
-    for(int i=0; i<row; i++)
-    {
-        for(int j=0; j<column; j++)
-        {
-            printf("%d ", tab[j][i]);
-        }
-        printf("\n");
-    }
-/*
-    tab[3][4] = 1;
-    lower(column, row, tab, 5);
+    char final_tab[column][row];
 
     for(int i=0; i<row; i++)
     {
         for(int j=0; j<column; j++)
         {
-            printf("%d ", tab[j][i]);
+            final_tab[j][i] = '.';
+        }
+    }
+
+    for(int i=0; i<row; i++)
+    {
+        for(int j=0; j<column; j++)
+        {
+            if (tab[j][i] == 1)
+            {
+                final_tab[j][i] = 'X';
+            }
+        }
+    }
+
+    for(int i=0; i<row; i++)
+    {
+        for(int j=0; j<column; j++)
+        {
+            printf("%c", final_tab[j][i]);
         }
         printf("\n");
     }
-*/
 
     return 0;
 }
